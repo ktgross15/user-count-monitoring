@@ -3,105 +3,45 @@
     // Meta data for display purposes
     "meta" : {
         "label" : "User Monitoring",
-        "description" : "User Monitoring to track user counts across licenses/instances.",
-        "icon" : "icon-puzzle-piece"
+        "description" : "This is a user count monitoring plugin that can be used to ensure that each license does not exceed its allotted number of users for each user profile. The plugin accepts URLs and API Keys (which are secured) to count up all users across licenses.",
+        "icon" : "icon-dashboard"
     },
 
     "kind" : "PYTHON",
     
-
-    // Inputs and outputs are defined by roles. In the recipe's I/O tab, the user can associate one
-    // or more dataset to each input and output role.
-
-    // The "arity" field indicates whether the user can associate several datasets to the role ('NARY')
-    // or at most one ('UNARY'). The "required" field indicates whether the user is allowed to
-    // associate no dataset with the role.
-
     "outputRoles" : [
         {
             "name": "overall_metrics",
             "label": "Overall Metrics",
+            "description": "High level metrics at the licence level",
             "arity": "UNARY",
             "required": true,
-            "acceptsDataset": true
+            "acceptsDataset": true,
+            "acceptsManagedFolder": false
         },
         {
-            "name": "users_by_license",
-            "label": "Users by License",
-            "arity": "UNARY",
-            "required": false,
-            "acceptsDataset": true
-        },
-        {
-            "name": "users_by_instance",
-            "label": "Users by Instance",
+            "name": "user_licenses",
+            "label": "Users by License & Instance",
+            "description": "All instances and licenses accociated with each user",
             "arity": "UNARY",
             "required": false,
             "acceptsDataset": true
         }
-        // ...
     ],
-
-    // The field "params" holds a list of all the params
-    // for wich the user will be prompted for values in the Settings tab of the recipe.
-
-    // The available parameter types are:
-    // STRING, INT, DOUBLE, BOOLEAN, PASSWORD, SELECT, MAP, COLUMN, COLUMNS, TEXTAREA
-
     "params": [
         {
-            "name": "limit_per_license",
-            "label" : "User Limit per License",
-            "type": "INT",
-            "mandatory" : true
+            "name": "urls_keys",
+            "label": "URL-API Key Mapping",
+            "type": "MAP",
+            "defaultValue": {"Enter URL 1 here":"Enter API Key 1 here"}
         },
         {
-            "name": "num_instances",
-            "label" : "Number of Instances",
-            "type": "INT",
-            "mandatory" : true
-        },
-        {
-            "name": "instance1_url",
-            "label" : "Instance 1 URL",
-            "type": "STRING",
-            "mandatory" : true
-        },
-        {
-            "name": "instance1_api_key",
-            "label" : "Instance 1 API Key",
-            "type": "STRING",
-            "mandatory" : true
-        },
-        {
-            "name": "instance2_url",
-            "label" : "Instance 2 URL",
-            "type": "STRING",
-            "mandatory" : false,
-            "visibilityCondition" : "model.num_instances==2"
-        },
-        {
-            "name": "instance2_api_key",
-            "label" : "Instance 2 API Key",
-            "type": "STRING",
-            "mandatory" : false,
-            "visibilityCondition" : "model.num_instances==2"
-        },
-        {
-            "name": "instance2_license_id",
-            "label" : "Instance 2 License ID",
-            "type": "STRING",
-            "mandatory" : false,
-            "visibilityCondition" : "model.num_instances==2"
+            "name": "ignore_ssl_certs",
+            "label": "Ignore SSL Certificates",
+            "description": "Allow plugin to run for SSL-enabled instances by ignoring SSL certificates.",
+            "type": "BOOLEAN",
+            "defaultValue": true
         }
-    ],
-
-    // The field "resourceKeys" holds a list of keys that allows to limit the number
-    // of concurrent executions and activities triggered by this recipe.
-    //
-    // Administrators can configure the limit per resource key in the Administration > Settings > Flow build
-    // screen.
-
-    "resourceKeys" : []
+    ]
 
 }
