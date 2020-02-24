@@ -6,8 +6,6 @@ import pandas as pd
 import datetime
 import json
 
-# test
-
 ### GENERATE FULL DATAFRAME ###
 
 api_url_dict = get_recipe_config().get("urls_keys", None)
