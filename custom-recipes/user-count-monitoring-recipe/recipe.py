@@ -12,15 +12,14 @@ api_url_dict = get_recipe_config().get("urls_keys", None)
 ignore_ssl_certs = get_recipe_config().get("ignore_ssl_certs", None)
 
 # instantiate lists
-display_names = []
-emails = []
-user_groups = []
-logins = []
-user_profs = []
-full_df = pd.DataFrame(columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
+# display_names = []
+# emails = []
+# user_groups = []
+# logins = []
+# user_profs = []
+# full_df = pd.DataFrame(columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
 
 prof_limit_list = []
-
 df_data = []
 
 for url, api_key in api_url_dict.iteritems():
