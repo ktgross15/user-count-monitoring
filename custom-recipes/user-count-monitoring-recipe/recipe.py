@@ -17,10 +17,11 @@ emails = []
 user_groups = []
 logins = []
 user_profs = []
+full_df = pd.DataFrame(columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
+
 prof_limit_list = []
 
 df_data = []
-full_df = pd.DataFrame(columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
 
 for url, api_key in api_url_dict.iteritems():
     client = dataikuapi.DSSClient(url, api_key)
