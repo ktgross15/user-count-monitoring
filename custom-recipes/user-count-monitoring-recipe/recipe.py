@@ -12,23 +12,12 @@ api_url_dict = get_recipe_config().get("urls_keys", None)
 ignore_ssl_certs = get_recipe_config().get("ignore_ssl_certs", None)
 
 # instantiate lists
-# display_names = []
-# emails = []
-# user_groups = []
-# logins = []
-# user_profs = []
+display_names = []
+emails = []
+user_groups = []
+logins = []
+user_profs = []
 prof_limit_list = []
-
-    # ratings_df_data = []
-    # for row in preds:
-    #     # print row
-    #     row_dict = {}
-    #     row_dict[item_id_col] = row.iid
-    #     row_dict[user_id_col] = row.uid
-    #     row_dict['actual_rating'] = row.r_ui
-    #     row_dict['pred_rating'] = row.est
-    #     ratings_df_data.append(row_dict)
-    # preds_df = pd.DataFrame(ratings_df_data, columns=[user_id_col, item_id_col, 'actual_rating', 'pred_rating'])
 
 df_data = []
 # full_df = pd.DataFrame(columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
@@ -48,45 +37,45 @@ for url, api_key in api_url_dict.iteritems():
         limit = prof_limits[user_prof]['licensed']['licensedLimit']
         prof_limit_list.append([license_id, user_prof, limit])
 
-    for user in client.list_users():
-        for param in ['displayName','groups','login','email','userProfile']:
-            row_dict = {}
-            try:
-                param_val = user[param]
-                if type(param_val) in [str, unicode]:
-                    param_val = param_val.lower()
-            except:
-                param_val = np.NaN
-            row_dict[param] = param_val
+    # for user in client.list_users():
+    #     for param in ['displayName','groups','login','email','userProfile']:
+    #         row_dict = {}
+    #         try:
+    #             param_val = user[param]
+    #             if type(param_val) in [str, unicode]:
+    #                 param_val = param_val.lower()
+    #         except:
+    #             param_val = np.NaN
+    #         row_dict[param] = param_val
 
-            # add later
-            row_dict['license_id'] = license_id
-            row_dict['instance_url'] = url
+    #         # add later
+    #         row_dict['license_id'] = license_id
+    #         row_dict['instance_url'] = url
 
-            df_data.append(row_dict)
-        full_df = pd.DataFrame(df_data, columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
+    #         df_data.append(row_dict)
+    #     full_df = pd.DataFrame(df_data, columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
 
 
     # get user-specific info
-    # for user in client.list_users():
+    for user in client.list_users():
 
-    #     display_name = user['displayName'].lower()
-    #     user_groups = user['groups']
-    #     login = user['login'].lower()
-    #     user_prof = user['userProfile'].lower()
-    #     try:
-    #         email = user['email'].lower()
-    #     except:
-    #         email = np.NaN
+        display_name = user['displayName'].lower()
+        user_groups = user['groups']
+        login = user['login'].lower()
+        user_prof = user['userProfile'].lower()
+        try:
+            email = user['email'].lower()
+        except:
+            email = np.NaN
 
-    #     full_df = full_df.append({'license_id':license_id,
-    #                               'instance_url':url,
-    #                               'display_name':display_name,
-    #                               'login':login,
-    #                               'email':email,
-    #                               'user_profile':user_prof,
-    #                               'user_groups':user_groups},
-    #                             ignore_index=True)
+        full_df = full_df.append({'license_id':license_id,
+                                  'instance_url':url,
+                                  'display_name':display_name,
+                                  'login':login,
+                                  'email':email,
+                                  'user_profile':user_prof,
+                                  'user_groups':user_groups},
+                                ignore_index=True)
     print "Added ", url
 
 now = datetime.datetime.now()
