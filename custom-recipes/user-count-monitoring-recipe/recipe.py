@@ -61,7 +61,7 @@ for url, api_key in api_url_dict.iteritems():
             row_dict = {}
             try:
                 param_val = user[param]
-                if type(param_val) in [str, unicode]:
+                if param_val != 'groups':
                     param_val = param_val.lower()
             except:
                 param_val = np.NaN
