@@ -17,7 +17,7 @@ ignore_ssl_certs = get_recipe_config().get("ignore_ssl_certs", None)
 # user_groups = []
 # logins = []
 # user_profs = []
-# prof_limit_list = []
+prof_limit_list = []
 
     # ratings_df_data = []
     # for row in preds:
