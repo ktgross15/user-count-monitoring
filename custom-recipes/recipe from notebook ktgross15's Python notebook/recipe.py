@@ -42,11 +42,14 @@ for url, api_key in api_url_dict.iteritems():
         display_name = user['displayName'].lower()
         user_groups = user['groups']
         login = user['login'].lower()
-        user_prof = user['userProfile'].lower()
         try:
             email = user['email'].lower()
         except:
             email = np.NaN
+        try:
+            user_prof = user['userProfile'].lower()
+        except:
+            user_prof = np.NaN
 
         full_df = full_df.append({'license_id':license_id,
                                   'instance_url':url,
