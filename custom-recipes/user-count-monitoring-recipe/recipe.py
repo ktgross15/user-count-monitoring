@@ -56,9 +56,9 @@ for url, api_key in api_url_dict.iteritems():
             except:
                 param_val = np.NaN
             row_dict[param] = param_val
+            row_dict['license_id'] = license_id
+            row_dict['instance_url'] = url
             df_data.append(row_dict)
-        df_data['license_id'] = license_id
-        df_data['instance_url'] = url
         full_df = pd.DataFrame(df_data, columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
 
 
