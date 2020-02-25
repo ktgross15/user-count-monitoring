@@ -53,6 +53,8 @@ for url, api_key in api_url_dict.iteritems():
             row_dict = {}
             try:
                 param_val = user[param]
+                if type(param_val) in [str, unicode]:
+                    param_val = param_val.lower()
             except:
                 param_val = np.NaN
             row_dict[param] = param_val
@@ -60,7 +62,7 @@ for url, api_key in api_url_dict.iteritems():
             # add later
             row_dict['license_id'] = license_id
             row_dict['instance_url'] = url
-            
+
             df_data.append(row_dict)
         full_df = pd.DataFrame(df_data, columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
 
