@@ -74,7 +74,6 @@ overall_df['count'] = overall_df['count'].astype(int)
 overall_df = overall_df.sort_values(by=['license_id','user_profile'])
 overall_df['within_limit'] = np.where((overall_df['count']<= overall_df['limit']) | (overall_df['limit'] == -1), True, False)
 
-
 ### WRITE TO  OUTPUT DATASETS ###
 
 users_by_license_ds_name = get_output_names_for_role('user_licenses')[0]
