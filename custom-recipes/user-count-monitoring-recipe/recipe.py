@@ -53,13 +53,12 @@ for url, api_key in api_url_dict.iteritems():
         df_data.append(row_dict)
     
     full_df = pd.DataFrame(df_data, columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
+    full_df['time_recorded'] = now
     print "Added ", url        
 
 # generate instance-license dataframe
-instance_df = full_df.groupby(['login','user_profile','license_id','instance_url']).count().reset_index()
+instance_df = full_df.groupby(['login','user_profile','license_id','instance_url','time_recorded']).count().reset_index()
 instance_df = instance_df.drop(['display_name','email','user_groups'], axis=1)
-instance_df['time_recorded'] = now
-
 
 # generate overall dataframe
 counts_df = full_df[['login','license_id','user_profile']].groupby(['license_id','user_profile']).count().reset_index()
@@ -74,7 +73,6 @@ overall_df = overall_df.fillna(0)
 overall_df['count'] = overall_df['count'].astype(int)
 overall_df = overall_df.sort_values(by=['license_id','user_profile'])
 overall_df['within_limit'] = np.where((overall_df['count']<= overall_df['limit']) | (overall_df['limit'] == -1), True, False)
-overall_df['time_recorded'] = now
 
 
 ### WRITE TO  OUTPUT DATASETS ###
