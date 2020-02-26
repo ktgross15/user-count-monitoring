@@ -11,14 +11,17 @@ import json
 api_url_dict = get_recipe_config().get("urls_keys", None)
 ignore_ssl_certs = get_recipe_config().get("ignore_ssl_certs", None)
 
-# instantiate lists
-# display_names = []
-# emails = []
-# user_groups = []
-# logins = []
-# user_profs = []
-# full_df = pd.DataFrame(columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
+def get_param_val(user, param):
+    try:
+        param_val = user[param]
+        if param != 'groups':
+            param_val = param_val.lower()
+    except:
+        param_val = ''
+    return param_val
 
+# instantiate lists
+now = datetime.datetime.now()
 prof_limit_list = []
 df_data = []
 
@@ -27,7 +30,7 @@ for url, api_key in api_url_dict.iteritems():
     if ignore_ssl_certs:
         client._session.verify = False
 
-    # get licensing status if client creds are valid
+    # get licensing status
     licensing_status = client.get_licensing_status()
     license_id = licensing_status['base']['licenseContent']['licenseId']
     
@@ -39,42 +42,18 @@ for url, api_key in api_url_dict.iteritems():
 
     # get user-specific info
     for user in client.list_users():
-        # display_name = user['displayName'].lower()
-        # user_groups = user['groups']
-        # login = user['login'].lower()
-        # user_prof = user['userProfile'].lower()
-        # try:
-        #     email = user['email'].lower()
-        # except:
-        #     email = np.NaN
-
-        # full_df = full_df.append({'license_id':license_id,
-        #                           'instance_url':url,
-        #                           'display_name':display_name,
-        #                           'login':login,
-        #                           'email':email,
-        #                           'user_profile':user_prof,
-        #                           'user_groups':user_groups},
-        #                         ignore_index=True)
-
-        for param in ['displayName','groups','login','email','userProfile']:
-            row_dict = {}
-            try:
-                param_val = user[param]
-                if param_val != 'groups':
-                    print param_val
-                    param_val = param_val.lower()
-            except:
-                param_val = np.NaN
-            row_dict[param] = param_val
-            row_dict['license_id'] = license_id
-            row_dict['instance_url'] = url
-            df_data.append(row_dict)
+        row_dict = {}
+        row_dict['display_name'] = get_param_val(user, 'displayName')
+        row_dict['login'] = get_param_val(user, 'login')
+        row_dict['email'] = get_param_val(user, 'email')
+        row_dict['user_groups'] = get_param_val(user, 'groups')
+        row_dict['user_profile'] = get_param_val(user, 'userProfile')
+        row_dict['license_id'] = license_id
+        row_dict['instance_url'] = url
+        df_data.append(row_dict)
     
     full_df = pd.DataFrame(df_data, columns=['license_id','instance_url','display_name','login','email','user_profile','user_groups'])
-    print "Added ", url
-
-now = datetime.datetime.now()
+    print "Added ", url        
 
 # generate instance-license dataframe
 instance_df = full_df.groupby(['login','user_profile','license_id','instance_url']).count().reset_index()
