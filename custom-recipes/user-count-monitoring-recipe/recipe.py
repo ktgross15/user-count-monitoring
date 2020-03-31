@@ -61,7 +61,7 @@ instance_df = full_df.groupby(['login','user_profile','license_id','instance_url
 instance_df = instance_df.drop(['display_name','email','user_groups'], axis=1)
 
 # generate overall dataframe
-counts_df = full_df[['login','license_id','user_profile']].groupby(['license_id','user_profile']).count().reset_index()
+counts_df = full_df[['login','license_id','user_profile']].drop_duplicates().groupby(['license_id','user_profile']).count().reset_index()
 counts_df = counts_df.rename(columns={'login':'count'})
 
 limits_df = pd.DataFrame(prof_limit_list).drop_duplicates()
